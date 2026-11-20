@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Беседка 13,4 × 6,6</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one 3D stage on top, view buttons under it, then plain sections with sizes and money. */
+:root{
+  --bg:#f3f2ee; --surface:#ffffff; --fg:#22252a; --muted:#6a6e74; --line:#dcdad3;
+  --accent:#b06a2c; --graphite:#2f3438; --warn:#a4481c; --ok:#3d6b4a;
+  --font-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17191b; --surface:#202326; --fg:#ecebe6; --muted:#a3a7ad; --line:#33373b;
+  --accent:#e09a5a; --graphite:#cfd3d6; --warn:#f08a5d; --ok:#7fc093; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17191b; --surface:#202326; --fg:#ecebe6; --muted:#a3a7ad; --line:#33373b;
+  --accent:#e09a5a; --graphite:#cfd3d6; --warn:#f08a5d; --ok:#7fc093; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 40px}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font-size:clamp(22px,4vw,30px);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:19px;margin:0 0 8px;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0}
+#stage{position:relative;width:100%;aspect-ratio:16/10;max-height:72vh;min-height:320px;border-radius:12px;overflow:hidden;background:#cfd8de;border:1px solid var(--line)}
+#stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.hint{position:absolute;left:10px;bottom:8px;font:12px var(--font-mono);color:#20262b;background:rgba(255,255,255,.75);padding:3px 8px;border-radius:6px}
+.bar{display:flex;flex-wrap:wrap;gap:8px}
+.bar button{font:600 14px var(--font-body);padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--graphite);color:var(--bg);border-color:var(--graphite)}
+.bar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.card b{display:block;margin-bottom:4px}
+.card p{margin:0;color:var(--muted)}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right;white-space:nowrap}
+tr.total td{font-weight:700;border-bottom:none}
+.pill{display:inline-block;font:600 12px var(--font-body);padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.pill.warn{color:var(--warn)} .pill.ok{color:var(--ok)}
+.note{color:var(--muted);font-size:13px}
+ul.plain{margin:0;padding-left:18px}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Беседка 13,4 × 6,6 м и зона отдыха</h1>
+    <p class="sub">Краснодар · модель по плану заказчика · крутите пальцем, двумя пальцами — приближение</p>
+  </header>
+
+  <div id="stage"><div class="hint" id="hint">загрузка модели…</div></div>
+
+  <div class="bar" role="group" aria-label="Виды">
+    <button id="v-all" aria-pressed="true">Общий вид</button>
+    <button id="v-front" aria-pressed="false">Фасад</button>
+    <button id="v-in" aria-pressed="false">Внутри</button>
+    <button id="v-open" aria-pressed="false">Зона отдыха</button>
+    <button id="v-top" aria-pressed="false">План сверху</button>
+    <button id="t-roof" aria-pressed="false">Снять крышу</button>
+    <button id="t-night" aria-pressed="false">Вечер</button>
+  </div>
+
+  <section class="grid" id="facts"></section>
+
+  
+<section>
+  <h2>Сколько стоит</h2>
+  <div class="grid">
+    <div class="card"><b>Материалы, всего</b><p><span class="num">2,23–3,04 млн ₽</span> <span class="pill warn">выше бюджета 0,5–1 млн</span></p></div>
+    <div class="card"><b>Работа, если нанимать</b><p><span class="num">0,50–0,89 млн ₽</span> по рекламным ценам бригад Краснодара «от»</p></div>
+    <div class="card"><b>Цены найдены в Краснодаре</b><p><span class="num">74%</span> суммы. Остальное — оценка, помечено в таблице.</p></div>
+  </div>
+</section>
+<section>
+  <h2>Как уложиться: строить в три этапа</h2>
+  <div class="grid">
+    <div class="card"><b>Этап 1 · коробка</b><p>Фундамент, кирпичная стена, каркас, крыша с потолком.<br><span class="num">0,88–1,15 млн ₽</span> <span class="pill ok">≈ ваш бюджет</span></p></div>
+    <div class="card"><b>Этап 2 · стекло</b><p>Раздвижное остекление в пол, 47,62 м².<br><span class="num">0,57–0,76 млн ₽</span></p></div>
+    <div class="card"><b>Этап 3 · начинка и терраса</b><p>Полы, санузел, кухня, электрика, терраса из доски, навес.<br><span class="num">0,78–1,12 млн ₽</span></p></div>
+  </div>
+  <p class="note">Дешевле можно: правый торец кирпичный вместо стекла (−≈0,14 млн), терраса только в зоне отдыха без дорожки (−≈0,1 млн), свой кирпич и блоки с участка. Встречаются предложения холодного остекления 4 300–9 000 ₽/м² с монтажом — для стекла высотой 2,5 м надо проверить.</p>
+</section>
+<section>
+  <h2>Материалы по разделам</h2>
+  <div class="tablewrap"><table>
+   <thead><tr><th>Раздел</th><th class="r">от, ₽</th><th class="r">до, ₽</th></tr></thead><tbody>
+<tr><td>1. Основание и фундамент</td><td class='r num'>315 095</td><td class='r num'>390 070</td></tr>
+<tr><td>2. Стены и каркас</td><td class='r num'>192 174</td><td class='r num'>288 633</td></tr>
+<tr><td>3. Крыша беседки</td><td class='r num'>368 341</td><td class='r num'>472 610</td></tr>
+<tr><td>4. Остекление в пол</td><td class='r num'>571 500</td><td class='r num'>762 000</td></tr>
+<tr><td>5. Полы</td><td class='r num'>537 662</td><td class='r num'>768 117</td></tr>
+<tr><td>6. Навес над зоной отдыха</td><td class='r num'>76 924</td><td class='r num'>87 732</td></tr>
+<tr><td>7. Электрика</td><td class='r num'>76 374</td><td class='r num'>109 728</td></tr>
+<tr><td>8. Вода, санузел, кухня</td><td class='r num'>90 350</td><td class='r num'>157 030</td></tr>
+<tr class='total'><td>Итого материалы</td><td class='r num'>2 228 420</td><td class='r num'>3 035 920</td></tr></tbody></table></div>
+</section>
+<section>
+  <h2>Что и сколько покупать</h2>
+  <div class="tablewrap"><table>
+   <thead><tr><th>Позиция</th><th class="r">Кол-во</th><th class="r">Цена за ед., ₽</th><th class="r">Сумма, ₽</th><th>Где цена</th></tr></thead><tbody>
+<tr><th colspan='5'>1. Основание и фундамент</th></tr>
+<tr><td>Песок под подушку (с уплотнением)</td><td class='r num'>22,69 м³</td><td class='r num'>900–1 400</td><td class='r num'>20 418–31 762</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Щебень 20–40</td><td class='r num'>16,31 м³</td><td class='r num'>2 200–2 900</td><td class='r num'>35 874–47 289</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Геотекстиль</td><td class='r num'>103,98 м²</td><td class='r num'>30–45</td><td class='r num'>3 119–4 679</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Утеплитель ЭППС 50 мм под плиту</td><td class='r num'>99,26 м²</td><td class='r num'>300–380</td><td class='r num'>29 777–37 717</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Плёнка 200 мкм</td><td class='r num'>108,71 м²</td><td class='r num'>15–25</td><td class='r num'>1 631–2 718</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Бетон М300 с доставкой (плита, края, пояс на стене)</td><td class='r num'>23,85 м³</td><td class='r num'>4 990–6 110</td><td class='r num'>119 025–145 740</td><td><span class='pill ok'>Краснодар · Гамма-Бетон, прайс ноябрь 2026</span></td></tr>
+<tr><td>Бетононасос, 1 смена</td><td class='r num'>1 смена</td><td class='r num'>22 000–28 000</td><td class='r num'>22 000–28 000</td><td><span class='pill ok'>Краснодар · Гамма-Бетон</span></td></tr>
+<tr><td>Арматура А500С 10 и 12 мм</td><td class='r num'>1,41 т</td><td class='r num'>50 990–52 490</td><td class='r num'>71 851–73 965</td><td><span class='pill ok'>Краснодар · Металлсервис, прайс 20.11.2026</span></td></tr>
+<tr><td>Вязальная проволока, фиксаторы</td><td class='r num'>1 компл.</td><td class='r num'>3 000–5 000</td><td class='r num'>3 000–5 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Доска для опалубки 25 мм</td><td class='r num'>0,6 м³</td><td class='r num'>14 000–22 000</td><td class='r num'>8 400–13 200</td><td><span class='pill ok'>Краснодар · Profi-лес (дата прайса не указана)</span></td></tr>
+<tr><th colspan='5'>2. Стены и каркас</th></tr>
+<tr><td>Кирпич облицовочный жёлтый (стена 13,4 × 3 м, 25 см)</td><td class='r num'>4306 шт</td><td class='r num'>28–45</td><td class='r num'>120 568–193 770</td><td><span class='pill warn'>оценка, цену не нашли · есть на участке — пересчитать</span></td></tr>
+<tr><td>Цемент М500 50 кг для раствора</td><td class='r num'>14 мешок</td><td class='r num'>550–700</td><td class='r num'>7 700–9 800</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Песок для раствора</td><td class='r num'>2,66 м³</td><td class='r num'>900–1 400</td><td class='r num'>2 392–3 722</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Кладочная сетка</td><td class='r num'>11,06 м²</td><td class='r num'>60–120</td><td class='r num'>663–1 327</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Газоблок 100 мм для санузла</td><td class='r num'>74 шт</td><td class='r num'>110–160</td><td class='r num'>8 140–11 840</td><td><span class='pill warn'>оценка, цену не нашли · белые блоки на участке — пересчитать</span></td></tr>
+<tr><td>Клей для газоблока 25 кг</td><td class='r num'>3 мешок</td><td class='r num'>380–520</td><td class='r num'>1 140–1 560</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Профтруба 100×100×3–4 (стойки и балки)</td><td class='r num'>52,36 м.п.</td><td class='r num'>720–950</td><td class='r num'>37 699–49 742</td><td><span class='pill ok'>Краснодар · 100×100×3 — 720 ₽ (последняя продажа), 4 мм — оценка</span></td></tr>
+<tr><td>Закладные пластины, анкеры</td><td class='r num'>1 компл.</td><td class='r num'>5 000–8 000</td><td class='r num'>5 000–8 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Эмаль по металлу</td><td class='r num'>8 кг</td><td class='r num'>839</td><td class='r num'>6 712</td><td><span class='pill ok'>Краснодар · оценка по прайсу продавца</span></td></tr>
+<tr><td>Электроды</td><td class='r num'>5 кг</td><td class='r num'>432</td><td class='r num'>2 160</td><td><span class='pill ok'>Краснодар</span></td></tr>
+<tr><th colspan='5'>3. Крыша беседки</th></tr>
+<tr><td>Металлочерепица Монтеррей 0,45 коричневая (крыша 118 м² + 15% на вальмы)</td><td class='r num'>135,74 м²</td><td class='r num'>573</td><td class='r num'>77 779</td><td><span class='pill ok'>Краснодар · Центр Металлокровли</span></td></tr>
+<tr><td>Коньки на конёк и рёбра</td><td class='r num'>16 шт</td><td class='r num'>441–1 428</td><td class='r num'>7 056–22 848</td><td><span class='pill ok'>Краснодар · Центр Металлокровли</span></td></tr>
+<tr><td>Карнизные и торцевые планки</td><td class='r num'>24 шт</td><td class='r num'>74–245</td><td class='r num'>1 776–5 880</td><td><span class='pill ok'>Краснодар · Центр Металлокровли</span></td></tr>
+<tr><td>Саморезы кровельные RAL 8017</td><td class='r num'>945 шт</td><td class='r num'>1,16–1,36</td><td class='r num'>1 096–1 285</td><td><span class='pill ok'>Краснодар · Центр Металлокровли</span></td></tr>
+<tr><td>Гидроизоляционная мембрана (рулон 35 м²)</td><td class='r num'>4 рулон</td><td class='r num'>1 010</td><td class='r num'>4 040</td><td><span class='pill ok'>Краснодар · Центр Металлокровли</span></td></tr>
+<tr><td>Стропила и рёбра, доска 50×200</td><td class='r num'>2,54 м³</td><td class='r num'>21 000–22 000</td><td class='r num'>53 237–55 772</td><td><span class='pill ok'>Краснодар · Profi-лес (дата прайса не указана)</span></td></tr>
+<tr><td>Мауэрлат и опорный брус 100×150</td><td class='r num'>0,63 м³</td><td class='r num'>22 000</td><td class='r num'>13 860</td><td><span class='pill ok'>Краснодар · Profi-лес, цена бруса 100×100</span></td></tr>
+<tr><td>Обрешётка 25×100 и контррейка</td><td class='r num'>1,47 м³</td><td class='r num'>14 000–22 000</td><td class='r num'>20 558–32 305</td><td><span class='pill ok'>Краснодар · Profi-лес</span></td></tr>
+<tr><td>Антисептик</td><td class='r num'>20 л</td><td class='r num'>150–300</td><td class='r num'>3 000–6 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Утеплитель потолка 150 мм</td><td class='r num'>92,86 м²</td><td class='r num'>380–520</td><td class='r num'>35 288–48 288</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Пароизоляция</td><td class='r num'>102,15 м²</td><td class='r num'>16–36</td><td class='r num'>1 634–3 677</td><td><span class='pill ok'>Краснодар · Центр Металлокровли</span></td></tr>
+<tr><td>Потолок: вагонка</td><td class='r num'>92,86 м²</td><td class='r num'>600–900</td><td class='r num'>55 717–83 576</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Софиты под свесы</td><td class='r num'>22 м²</td><td class='r num'>450–650</td><td class='r num'>9 900–14 300</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Водосток (желоб + трубы)</td><td class='r num'>58 м.п.</td><td class='r num'>700–1 000</td><td class='r num'>40 600–58 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Полоса над стеклом, планкен</td><td class='r num'>20 м²</td><td class='r num'>2 140–2 250</td><td class='r num'>42 800–45 000</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><th colspan='5'>4. Остекление в пол</th></tr>
+<tr><td>Раздвижное холодное алюминиевое остекление, высота 2.5 м</td><td class='r num'>47,62 м²</td><td class='r num'>12 000–16 000</td><td class='r num'>571 500–762 000</td><td><span class='pill ok'>Краснодар · АЛПРОФ-СТРОЙ: «от 12 000» (с выдачи Яндекс.Карт); верх — оценка</span></td></tr>
+<tr><th colspan='5'>5. Полы</th></tr>
+<tr><td>Керамогранит 60×120 матовый</td><td class='r num'>97,28 м²</td><td class='r num'>1 590–2 790</td><td class='r num'>154 682–271 422</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Клей плиточный С2 25 кг</td><td class='r num'>20 мешок</td><td class='r num'>589–900</td><td class='r num'>11 780–18 000</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Затирка</td><td class='r num'>8 кг</td><td class='r num'>150–300</td><td class='r num'>1 200–2 400</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Плитка на стены санузла</td><td class='r num'>20,42 м²</td><td class='r num'>900–1 500</td><td class='r num'>18 374–30 624</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Гидроизоляция санузла обмазочная</td><td class='r num'>25 кг</td><td class='r num'>32–440</td><td class='r num'>800–11 000</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Террасная доска ДПК (дорожка + зона отдыха)</td><td class='r num'>62,25 м²</td><td class='r num'>3 487–4 543</td><td class='r num'>217 075–282 814</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Лага ДПК 3 м</td><td class='r num'>52 шт</td><td class='r num'>699</td><td class='r num'>36 348</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Регулируемые опоры под лаги</td><td class='r num'>260 шт</td><td class='r num'>269–299</td><td class='r num'>69 940–77 740</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Кляймеры (≈20 шт на м²)</td><td class='r num'>12 уп. 100 шт</td><td class='r num'>229–600</td><td class='r num'>2 748–7 200</td><td><span class='pill ok'>Краснодар · Бауцентр 229 ₽; размер упаковки уточнить</span></td></tr>
+<tr><td>Торцевой уголок ДПК 3 м</td><td class='r num'>12 шт</td><td class='r num'>799–899</td><td class='r num'>9 588–10 788</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Щебень и геотекстиль под террасу</td><td class='r num'>5,82 м³</td><td class='r num'>2 600–3 400</td><td class='r num'>15 127–19 781</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><th colspan='5'>6. Навес над зоной отдыха</th></tr>
+<tr><td>Винтовая свая 76×2000 + оголовок</td><td class='r num'>6 шт</td><td class='r num'>2 419</td><td class='r num'>14 514</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Профтруба 80×80×3 (стойки, балки)</td><td class='r num'>34,32 м.п.</td><td class='r num'>570–700</td><td class='r num'>19 562–24 024</td><td><span class='pill ok'>Краснодар · 570 ₽ — последняя продажа</span></td></tr>
+<tr><td>Профтруба 60×40×2 (стропила)</td><td class='r num'>52,8 м.п.</td><td class='r num'>195–247</td><td class='r num'>10 296–13 042</td><td><span class='pill ok'>Краснодар · 3 продавца</span></td></tr>
+<tr><td>Поликарбонат сотовый 10 мм 2,1×6 м</td><td class='r num'>4 лист</td><td class='r num'>6 990</td><td class='r num'>27 960</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Профиль соединительный 3 м</td><td class='r num'>8 шт</td><td class='r num'>199–399</td><td class='r num'>1 592–3 192</td><td><span class='pill ok'>Краснодар · Бауцентр Краснодар</span></td></tr>
+<tr><td>Термошайбы, торцевая лента</td><td class='r num'>1 компл.</td><td class='r num'>3 000–5 000</td><td class='r num'>3 000–5 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><th colspan='5'>7. Электрика</th></tr>
+<tr><td>Кабель от дома бронированный 3×6</td><td class='r num'>30 м</td><td class='r num'>665</td><td class='r num'>19 950</td><td><span class='pill warn'>РФ, не Краснодар · ВБШвнг 3×6</span></td></tr>
+<tr><td>Кабель ВВГнг-LS 3×2,5 (розетки)</td><td class='r num'>90 м</td><td class='r num'>128–150</td><td class='r num'>11 520–13 500</td><td><span class='pill warn'>РФ, не Краснодар</span></td></tr>
+<tr><td>Кабель ВВГнг-LS 3×1,5 (свет)</td><td class='r num'>70 м</td><td class='r num'>106–115</td><td class='r num'>7 420–8 050</td><td><span class='pill warn'>РФ, не Краснодар</span></td></tr>
+<tr><td>Кабель ВВГнг-LS 3×6 (плита)</td><td class='r num'>12 м</td><td class='r num'>357–369</td><td class='r num'>4 284–4 428</td><td><span class='pill warn'>РФ, не Краснодар</span></td></tr>
+<tr><td>Щиток, автоматы, УЗО</td><td class='r num'>1 компл.</td><td class='r num'>8 000–15 000</td><td class='r num'>8 000–15 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Розетки и выключатели</td><td class='r num'>20 шт</td><td class='r num'>200–400</td><td class='r num'>4 000–8 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Светодиодная лента с профилем (как на фото-примере)</td><td class='r num'>40 м</td><td class='r num'>250–450</td><td class='r num'>10 000–18 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Блоки питания ленты</td><td class='r num'>2 шт</td><td class='r num'>1 500–3 000</td><td class='r num'>3 000–6 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Точечные светильники</td><td class='r num'>14 шт</td><td class='r num'>300–700</td><td class='r num'>4 200–9 800</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Гофра, коробки, крепёж</td><td class='r num'>1 компл.</td><td class='r num'>4 000–7 000</td><td class='r num'>4 000–7 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><th colspan='5'>8. Вода, санузел, кухня</th></tr>
+<tr><td>Водонагреватель 80 л</td><td class='r num'>1 шт</td><td class='r num'>16 600–17 200</td><td class='r num'>16 600–17 200</td><td><span class='pill warn'>РФ, не Краснодар</span></td></tr>
+<tr><td>Унитаз-компакт</td><td class='r num'>1 шт</td><td class='r num'>8 000–15 000</td><td class='r num'>8 000–15 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Душевой поддон + стеклянная шторка</td><td class='r num'>1 компл.</td><td class='r num'>12 000–25 000</td><td class='r num'>12 000–25 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Трап для душа</td><td class='r num'>1 шт</td><td class='r num'>2 000–4 000</td><td class='r num'>2 000–4 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Раковина в санузел со смесителем</td><td class='r num'>1 компл.</td><td class='r num'>5 000–10 000</td><td class='r num'>5 000–10 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Мойка кухонная + смеситель</td><td class='r num'>1 компл.</td><td class='r num'>6 000–12 000</td><td class='r num'>6 000–12 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Варочная панель электрическая</td><td class='r num'>1 шт</td><td class='r num'>12 000–25 000</td><td class='r num'>12 000–25 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Столешница (кухня + бар)</td><td class='r num'>6,7 м.п.</td><td class='r num'>2 500–4 500</td><td class='r num'>16 750–30 150</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Трубы ППР 20 (вода)</td><td class='r num'>30 м</td><td class='r num'>52</td><td class='r num'>1 560</td><td><span class='pill warn'>РФ, не Краснодар</span></td></tr>
+<tr><td>Канализация 110</td><td class='r num'>10 м</td><td class='r num'>300–496</td><td class='r num'>3 000–4 960</td><td><span class='pill warn'>РФ, не Краснодар</span></td></tr>
+<tr><td>Канализация 50</td><td class='r num'>12 м</td><td class='r num'>120–180</td><td class='r num'>1 440–2 160</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+<tr><td>Фитинги, краны, крепёж</td><td class='r num'>1 компл.</td><td class='r num'>6 000–10 000</td><td class='r num'>6 000–10 000</td><td><span class='pill warn'>оценка, цену не нашли</span></td></tr>
+</tbody></table></div><p class='note'>Мебель, техника кроме плиты и водонагревателя, кухонные шкафы и телевизор в смету не входят. Цены 20.11.2026, перед покупкой уточнить в магазине.</p></section>
+<section><h2>Работа, если нанимать бригаду</h2><div class="tablewrap"><table>
+<thead><tr><th>Работа</th><th class="r">Объём</th><th class="r">Ставка, ₽</th><th class="r">Сумма, ₽</th><th>Источник</th></tr></thead><tbody>
+<tr><td>Фундаментная плита (работа)</td><td class='r num'>23,85 м³</td><td class='r num'>2 625</td><td class='r num'>62 613</td><td class='note'>«от», fudamentum.ru, Краснодар</td></tr>
+<tr><td>Кладка облицовочного кирпича</td><td class='r num'>40,2 м²</td><td class='r num'>2 500–2 900</td><td class='r num'>100 500–116 580</td><td class='note'>Краснодар, рекламные цены</td></tr>
+<tr><td>Сварка и монтаж металлокаркаса</td><td class='r num'>0,85 т</td><td class='r num'>12 000–24 000</td><td class='r num'>10 161–20 321</td><td class='note'>Краснодар</td></tr>
+<tr><td>Стропила + металлочерепица</td><td class='r num'>118,03 м²</td><td class='r num'>570–910</td><td class='r num'>67 280–107 412</td><td class='note'>стропила 350–560 + укладка 220–350, Краснодар</td></tr>
+<tr><td>Утепление и вагонка на потолок</td><td class='r num'>92,86 м²</td><td class='r num'>570–842</td><td class='r num'>52 931–78 190</td><td class='note'>утепление от 250 (profi.ru) + вагонка 320–592</td></tr>
+<tr><td>Плитка: пол и санузел</td><td class='r num'>115,84 м²</td><td class='r num'>1 000–2 500</td><td class='r num'>115 844–289 610</td><td class='note'>profi.ru Краснодар</td></tr>
+<tr><td>Монтаж террасной доски</td><td class='r num'>58,18 м²</td><td class='r num'>400–1 200</td><td class='r num'>23 272–69 816</td><td class='note'>Краснодар</td></tr>
+<tr><td>Навес из поликарбоната</td><td class='r num'>45 м²</td><td class='r num'>1 350–2 500</td><td class='r num'>60 750–112 500</td><td class='note'>Краснодар</td></tr>
+<tr><td>Электрика (точки)</td><td class='r num'>34 точка</td><td class='r num'>180–400</td><td class='r num'>6 120–13 600</td><td class='note'>«от 180» за розетку, profi.ru; верх — оценка</td></tr>
+<tr><td>Сантехника (точки)</td><td class='r num'>7 точка</td><td class='r num'>700–3 000</td><td class='r num'>4 900–21 000</td><td class='note'>трап от 710, душевая от 3 000, profi.ru</td></tr>
+<tr><td>Монтаж остекления</td><td class='r num'>47,62 м²</td><td class='r num'>0</td><td class='r num'>—</td><td class='note'>обычно входит в цену фирмы-остекления — уточнить</td></tr>
+<tr class='total'><td>Итого работа</td><td></td><td></td><td class='r num'>504 371–891 642</td><td></td></tr></tbody></table></div></section>
+<section><h2>Почему так</h2><div class="grid">
+<div class="card"><b>Фундамент — плита</b><p>Монолитная плита 20 см на песке и щебне, с утолщением 30 см по краям под стену и стойки. Одна заливка даёт и опору, и ровный пол под керамогранит.</p></div>
+<div class="card"><b>Стекло 2,5 м + полоса сверху</b><p>Раздвижные створки обычно делают до ~2,5 м высотой. Поэтому до 3 м добираем тёмной полосой обшивки, как на понравившемся фото.</p></div>
+<div class="card"><b>Крыша — вальмовая</b><p>Металлочерепице нужен уклон, плоской она не бывает. Взяли 22°, конёк выше стен на 1,54 м. Плоская крыша как на фото — другой материал, это отдельный вопрос.</p></div>
+<div class="card"><b>Сосед за задней стеной</b><p>Стена стоит у зелёного забора. Обычно требуют отступ от соседа (часто 1 м) и чтобы вода с крыши не лилась к нему — поэтому водосток по всему периметру. Проверьте правила своего района.</p></div>
+</div></section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const P = {"_note": "Единый источник размеров (метры). Ось X — вдоль беседки (0 = стена гаража), Z — вглубь от зелёного забора (0 = задняя кирпичная стена) к кирпичному забору. Меняешь тут — пересобирай модель и смету.", "pavilion": {"length": 13.4, "depth": 6.6, "wall_height": 3.0, "back_wall_thickness": 0.25, "roof_type": "hip", "roof_slope_deg": 22, "roof_overhang": 0.5, "column_step": 3.35, "slab_thickness": 0.2, "slab_edge_extra_depth": 0.3, "slab_edge_width": 0.4, "slab_outset": 0.15, "sand_cushion": 0.2, "gravel_layer": 0.15, "glazing_height": 2.5, "_glazing_note": "Створки раздвижных систем обычно до ~2.5 м (Alutech ALT W62 — 2.5 м по производителю), поэтому стекло 2.5 м + сверху полоса обшивки 0.5 м, как на фото-примере 1"}, "garage": {"x0": -3.0, "length": 3.0, "depth": 6.6, "height": 2.8}, "bathroom": {"x0": 0.0, "z0": 0.0, "w": 2.4, "d": 1.8, "wall_height": 3.0}, "kitchen": {"x0": 4.6, "w": 4.2, "d": 0.6}, "bar": {"x0": 9.6, "w": 2.5, "d": 0.6}, "tv": {"z0": 2.6, "w": 1.6}, "corner_sofa": {"x0": 3.4, "z0": 2.1, "a": 2.8, "b": 2.6, "depth": 0.9}, "dining": {"cx": 9.8, "cz": 3.6, "len": 3.2, "wid": 1.2, "chairs": 10}, "exit_door": {"x0": 7.6, "w": 2.4}, "walkway": {"z0": 6.6, "depth": 1.2, "x0": -3.0, "x1": 13.4}, "yard": {"z0": 7.8, "depth": 7.0}, "bed_left": {"x0": 0.0, "w": 7.4}, "open_zone": {"x0": 7.4, "w": 5.5, "canopy_height": 2.7, "canopy_overhang": 0.25, "post_count": 6, "rafter_step": 1.05, "purlin_step": 0.7}, "bed_right": {"x0": 12.9, "w": 0.5}, "deck": {"lag_step": 0.4, "pile_step": 1.5, "waste": 0.07}, "cable_from_house_m": 30};
+(function(){
+const stage=document.getElementById('stage'), hint=document.getElementById('hint');
+if(!window.THREE){hint.textContent='3D не загрузилось — обновите страницу';return;}
+const pv=P.pavilion, L=pv.length, D=pv.depth, H=pv.wall_height, S=pv.slab_thickness;
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+stage.prepend(renderer.domElement);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(45,1,0.1,400);
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.maxPolarAngle=Math.PI*0.495;
+
+const hemi=new THREE.HemisphereLight(0xeef3f7,0x55604a,0.75); scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffffff,0.85); sun.position.set(18,26,22); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-20,right:25,top:25,bottom:-20}); scene.add(sun);
+
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.85,metalness:0},o));
+const mat={
+  grass:M(0x7b8a5a), soil:M(0x3a2f28), concrete:M(0xb9b6ae), tile:M(0xd9d4ca,{roughness:.5}),
+  brick:M(0xe3cd8e), cap:M(0x5b3a2e), green:M(0x2f5a43,{metalness:.3}), graphite:M(0x2b2f33,{metalness:.4,roughness:.5}),
+  glass:new THREE.MeshStandardMaterial({color:0x9fc3d6,transparent:true,opacity:.28,roughness:.05,metalness:.2,side:THREE.DoubleSide,depthWrite:false}),
+  roof:M(0x5a3426,{roughness:.6,metalness:.3}), wood:M(0xc89a63), deck:M(0x6c6a66), white:M(0xf1efe9),
+  sofa:M(0x9a8a74), cushion:M(0xc8662f), rattan:M(0x8a6a45), black:M(0x111111,{roughness:.3}),
+  poly:new THREE.MeshStandardMaterial({color:0xe8f0f2,transparent:true,opacity:.45,roughness:.3,side:THREE.DoubleSide,depthWrite:false}),
+  led:new THREE.MeshStandardMaterial({color:0xffb46b,emissive:0xff9a40,emissiveIntensity:0})
+};
+function box(x0,y0,z0,x1,y1,z1,m,parent){const g=new THREE.BoxGeometry(x1-x0,y1-y0,z1-z0);const b=new THREE.Mesh(g,m);
+  b.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);b.castShadow=b.receiveShadow=true;(parent||scene).add(b);return b;}
+
+// ground
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(60,60),mat.grass);ground.rotation.x=-Math.PI/2;ground.position.set(6,0,7);ground.receiveShadow=true;scene.add(ground);
+// fences
+box(-6,0,-0.65,17,2.0,-0.6,mat.green);
+const yz=P.yard.z0+P.yard.depth;
+box(-6,0,yz,17,2.2,yz+0.25,mat.brick); box(-6,2.2,yz-0.03,17,2.28,yz+0.28,mat.cap);
+for(let x=-6;x<=17;x+=3.2) box(x-0.2,0,yz-0.05,x+0.2,2.45,yz+0.3,mat.brick);
+// garage
+const G=P.garage; box(G.x0,0,0,G.x0+G.length,G.height,G.depth,mat.brick); box(G.x0-0.1,G.height,-0.1,G.x0+G.length+0.05,G.height+0.15,G.depth+0.1,mat.graphite);
+// slab + floor
+box(-0.0,0,0,L,S,D,mat.concrete); box(0.25,S,0.25,L,S+0.02,D,mat.tile);
+// back brick wall
+box(0,S,0,L,S+H,pv.back_wall_thickness,mat.brick);
+// columns
+const cols=[]; for(let x=0;x<=L+0.01;x+=pv.column_step){cols.push(Math.min(x,L-0.1));}
+cols.forEach(x=>box(x,S,D-0.1,x+0.1,S+H,D,mat.graphite));
+[pv.back_wall_thickness,D/2].forEach(z=>box(L-0.1,S,z,L,S+H,z+0.1,mat.graphite));
+// top band (beam + cladding) front and right
+const gh=pv.glazing_height;
+box(0,S+gh,D-0.12,L,S+H,D+0.02,mat.graphite); box(L-0.12,S+gh,0,L+0.02,S+H,D,mat.graphite);
+const ledF=box(0.1,S+H-0.08,D+0.02,L,S+H-0.05,D+0.04,mat.led); const ledR=box(L+0.02,S+H-0.08,0.1,L+0.04,S+H-0.05,D,mat.led);
+// glass front with sliding mullions
+function glassRun(axis,a0,a1,fixed){const n=Math.max(1,Math.round((a1-a0)/1.1));const w=(a1-a0)/n;
+  for(let i=0;i<n;i++){const s=a0+i*w;
+    if(axis==='x'){box(s,S,fixed-0.06,s+w,S+gh,fixed-0.04,mat.glass);box(s,S,fixed-0.08,s+0.04,S+gh,fixed-0.02,mat.graphite);}
+    else{box(fixed-0.06,S,s,fixed-0.04,S+gh,s+w,mat.glass);box(fixed-0.08,S,s,fixed-0.02,S+gh,s+0.04,mat.graphite);} }}
+for(let i=0;i<cols.length-1;i++) glassRun('x',cols[i]+0.1,cols[i+1],D);
+glassRun('z',pv.back_wall_thickness,D/2,L); glassRun('z',D/2+0.1,D-0.1,L);
+// ceiling + roof
+const roofGroup=new THREE.Group(); scene.add(roofGroup);
+box(0,S+H,0,L,S+H+0.05,D,mat.wood,roofGroup);
+const o=pv.roof_overhang, ex0=-o, ex1=L+o, ez0=-o, ez1=D+o, ey=S+H+0.05;
+const run=(ez1-ez0)/2, rh=run*Math.tan(pv.roof_slope_deg*Math.PI/180), zr=(ez0+ez1)/2;
+const rx0=ex0+run, rx1=ex1-run, ry=ey+rh;
+const v=[ [ex0,ey,ez1],[ex1,ey,ez1],[rx1,ry,zr],[rx0,ry,zr],  [ex1,ey,ez0],[ex0,ey,ez0],[rx0,ry,zr],[rx1,ry,zr] ];
+const pos=[];const quad=(a,b,c,d)=>pos.push(...a,...b,...c,...a,...c,...d);const tri=(a,b,c)=>pos.push(...a,...b,...c);
+quad(v[0],v[1],v[2],v[3]); quad(v[4],v[5],v[6],v[7]); tri([ex1,ey,ez1],[ex1,ey,ez0],[rx1,ry,zr]); tri([ex0,ey,ez0],[ex0,ey,ez1],[rx0,ry,zr]);
+const rg=new THREE.BufferGeometry(); rg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); rg.computeVertexNormals();
+const roofMesh=new THREE.Mesh(rg,new THREE.MeshStandardMaterial({color:0x5a3426,roughness:.6,metalness:.3,side:THREE.DoubleSide}));roofMesh.castShadow=true;roofGroup.add(roofMesh);
+box(ex0,ey-0.2,ez1-0.02,ex1,ey,ez1+0.1,mat.graphite,roofGroup); box(ex0,ey-0.2,ez0-0.1,ex1,ey,ez0+0.02,mat.graphite,roofGroup);
+box(ex1-0.02,ey-0.2,ez0,ex1+0.1,ey,ez1,mat.graphite,roofGroup); box(ex0-0.1,ey-0.2,ez0,ex0+0.02,ey,ez1,mat.graphite,roofGroup);
+// bathroom
+const B=P.bathroom, bz1=B.z0+pv.back_wall_thickness+B.d, bt=0.1;
+box(B.w,S,pv.back_wall_thickness,B.w+bt,S+B.wall_height,bz1+bt,mat.white);
+box(0,S,bz1,B.w-0.9,S+B.wall_height,bz1+bt,mat.white);
+box(0.3,S,0.3,0.7,S+0.42,0.95,mat.white); box(1.4,S,0.3,2.3,S+0.12,1.2,mat.white); box(1.4,S,1.2,2.3,S+2.0,1.22,mat.glass);
+// kitchen
+const K=P.kitchen, wz=pv.back_wall_thickness;
+box(K.x0,S,wz,K.x0+K.w,S+0.86,wz+K.d,mat.white); box(K.x0,S+0.86,wz,K.x0+K.w,S+0.9,wz+K.d+0.02,mat.graphite);
+box(K.x0,S+1.5,wz,K.x0+K.w,S+2.2,wz+0.35,mat.white);
+box(K.x0+0.6,S+0.9,wz+0.1,K.x0+1.3,S+0.91,wz+0.5,mat.black); box(K.x0+2.6,S+0.9,wz+0.1,K.x0+3.2,S+0.905,wz+0.5,mat.black);
+// bar
+const Br=P.bar; box(Br.x0,S,wz,Br.x0+Br.w,S+1.1,wz+Br.d,mat.wood); box(Br.x0-0.05,S+1.1,wz,Br.x0+Br.w+0.05,S+1.14,wz+Br.d+0.15,mat.graphite);
+for(let i=0;i<3;i++){const cx=Br.x0+0.45+i*0.8; box(cx-0.18,S,wz+Br.d+0.3,cx+0.18,S+0.75,wz+Br.d+0.66,mat.graphite);}
+// TV on garage wall
+box(0.02,S+1.0,P.tv.z0,0.08,S+1.9,P.tv.z0+P.tv.w,mat.black);
+box(0.02,S,P.tv.z0-0.1,0.45,S+0.5,P.tv.z0+P.tv.w+0.1,mat.wood);
+// corner sofa (L) facing TV
+const C=P.corner_sofa, sd=C.depth;
+box(C.x0,S,C.z0,C.x0+C.a,S+0.45,C.z0+sd,mat.sofa); box(C.x0,S,C.z0,C.x0+C.a,S+0.85,C.z0+0.2,mat.sofa);
+box(C.x0+C.a-sd,S,C.z0,C.x0+C.a,S+0.45,C.z0+C.b+sd,mat.sofa); box(C.x0+C.a-0.2,S,C.z0,C.x0+C.a,S+0.85,C.z0+C.b+sd,mat.sofa);
+box(C.x0+0.8,S,C.z0+1.3,C.x0+1.6,S+0.4,C.z0+2.1,mat.wood);
+// dining table for 10
+const Dn=P.dining, tx0=Dn.cx-Dn.len/2, tz0=Dn.cz-Dn.wid/2;
+box(tx0,S+0.72,tz0,tx0+Dn.len,S+0.76,tz0+Dn.wid,mat.wood);
+[[tx0+0.2,tz0+0.2],[tx0+Dn.len-0.2,tz0+0.2],[tx0+0.2,tz0+Dn.wid-0.2],[tx0+Dn.len-0.2,tz0+Dn.wid-0.2]].forEach(([x,z])=>box(x-0.04,S,z-0.04,x+0.04,S+0.72,z+0.04,mat.graphite));
+const chair=(x,z,r)=>{const g=new THREE.Group();box(-0.23,0,-0.23,0.23,0.47,0.23,mat.sofa,g);box(-0.23,0.47,0.18,0.23,0.95,0.25,mat.sofa,g);g.position.set(x,S,z);g.rotation.y=r;scene.add(g);};
+for(let i=0;i<4;i++){const x=tx0+0.4+i*(Dn.len-0.8)/3; chair(x,tz0-0.45,Math.PI); chair(x,tz0+Dn.wid+0.45,0);}
+chair(tx0-0.45,Dn.cz,-Math.PI/2); chair(tx0+Dn.len+0.45,Dn.cz,Math.PI/2);
+// walkway deck
+const W=P.walkway; box(W.x0,0,W.z0,W.x1,0.15,W.z0+W.depth,mat.deck);
+// yard: beds and open zone
+const Y=P.yard, y1=Y.z0+Y.depth;
+function bed(x0,w){box(x0,0,Y.z0,x0+w,0.4,y1,mat.concrete);box(x0+0.15,0.38,Y.z0+0.15,x0+w-0.15,0.42,y1-0.15,mat.soil);}
+bed(P.bed_left.x0,P.bed_left.w); bed(P.bed_right.x0,P.bed_right.w);
+const OZ=P.open_zone, ox0=OZ.x0, ox1=OZ.x0+OZ.w;
+box(ox0,0,Y.z0,ox1,0.15,y1,mat.deck);
+// canopy
+const ch=OZ.canopy_height, co=OZ.canopy_overhang;
+const posts=[[ox0+0.05,Y.z0+0.1],[ox1-0.15,Y.z0+0.1],[ox0+0.05,(Y.z0+y1)/2],[ox1-0.15,(Y.z0+y1)/2],[ox0+0.05,y1-0.15],[ox1-0.15,y1-0.15]];
+posts.forEach(([x,z])=>box(x,0.15,z,x+0.08,ch,z+0.08,mat.graphite));
+box(ox0-co,ch,Y.z0-co,ox0+0.1,ch+0.1,y1+co,mat.graphite); box(ox1-0.2,ch,Y.z0-co,ox1+co,ch+0.1,y1+co,mat.graphite);
+for(let z=Y.z0-co;z<=y1+co;z+=OZ.rafter_step) box(ox0-co,ch+0.1,z,ox1+co,ch+0.16,z+0.04,mat.graphite);
+box(ox0-co,ch+0.17,Y.z0-co,ox1+co,ch+0.18,y1+co,mat.poly);
+// rattan hexagon table + two L sofas
+const hex=new THREE.Mesh(new THREE.CylinderGeometry(0.75,0.75,0.45,6),mat.rattan); hex.position.set((ox0+ox1)/2,0.15+0.225,(Y.z0+y1)/2-0.6); hex.castShadow=true; scene.add(hex);
+const hcx=(ox0+ox1)/2, hcz=(Y.z0+y1)/2-0.6;
+[-1,1].forEach(s=>{const x=hcx+s*1.7; box(x-0.4,0.15,hcz-1.2,x+0.4,0.6,hcz+1.0,mat.rattan); box(x-0.4,0.6,hcz-1.2,x+0.4,0.68,hcz+1.0,mat.white);
+  box(Math.min(x,x-s*0.9)-0.0,0.15,hcz+1.0,Math.max(x,x-s*0.9)+0.0,0.6,hcz+1.8,mat.rattan);});
+// sizes as text sprites
+function label(text,x,y,z){const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d');
+  g.fillStyle='rgba(255,255,255,.88)';g.fillRect(0,20,512,88);g.fillStyle='#1d2226';g.font='600 54px Manrope, sans-serif';g.textAlign='center';g.fillText(text,256,84);
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));s.scale.set(4,1,1);s.position.set(x,y,z);scene.add(s);return s;}
+const labels=[label('13,4 м',L/2,S+H+2.3,D+0.6),label('6,6 м',L+1.6,S+H+0.6,D/2),
+  label('зона отдыха 5,5 м',(ox0+ox1)/2,ch+0.9,y1-0.5),label('гараж',G.x0+G.length/2,G.height+0.8,D/2)];
+
+// views
+const views={
+  'v-all':{p:[22,15,26],t:[5.5,1,7]},
+  'v-front':{p:[6.5,2.2,19],t:[6.5,1.8,4]},
+  'v-in':{p:[12.6,1.65,6.0],t:[2.5,1.2,2.2],nolabels:true},
+  'v-front':{p:[6.5,2.2,19],t:[6.5,1.8,4],nolabels:true},
+  'v-open':{p:[13.2,3.1,17.2],t:[8.2,1.2,8.5],nolabels:true},
+  'v-top':{p:[6.0,34,7.5],t:[6.0,0,7.4],noroof:true}
+};
+let roofOn=true;
+function setRoof(on){roofOn=on;roofGroup.visible=on;document.getElementById('t-roof').setAttribute('aria-pressed',String(!on));}
+function go(id){const v=views[id];const k=(camera.aspect<1&&(id==='v-all'||id==='v-top'))?1.7:1;
+  camera.position.set(v.t[0]+(v.p[0]-v.t[0])*k,v.t[1]+(v.p[1]-v.t[1])*k,v.t[2]+(v.p[2]-v.t[2])*k);controls.target.set(...v.t);controls.update();
+  Object.keys(views).forEach(k=>document.getElementById(k).setAttribute('aria-pressed',String(k===id)));
+  setRoof(!v.noroof); labels.forEach(s=>s.visible=!v.nolabels);}
+Object.keys(views).forEach(k=>document.getElementById(k).addEventListener('click',()=>go(k)));
+document.getElementById('t-roof').addEventListener('click',()=>setRoof(!roofOn));
+let night=false; document.getElementById('t-night').addEventListener('click',e=>{night=!night;e.currentTarget.setAttribute('aria-pressed',String(night));
+  scene.background=new THREE.Color(night?0x1b2433:0xcfd8de); hemi.intensity=night?0.25:0.75; sun.intensity=night?0.1:0.85;
+  mat.led.emissiveIntensity=night?2.2:0; warm.intensity=night?1.2:0;});
+const warm=new THREE.PointLight(0xffa860,0,16); warm.position.set(L/2,S+H-0.3,D/2); scene.add(warm);
+scene.background=new THREE.Color(0xcfd8de);
+
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(stage); resize(); go('v-all');
+hint.textContent='вращать — палец/мышь · приблизить — щипок/колесо';
+(function loop(){controls.update();renderer.render(scene,camera);requestAnimationFrame(loop);})();
+})();
+
+// facts
+(function(){const f=document.getElementById('facts');const pv=P.pavilion;
+const items=[
+ ['Закрытая беседка',`${pv.length} × ${pv.depth} м, ${(pv.length*pv.depth).toFixed(1).replace('.',',')} м², высота стен ${pv.wall_height} м. Левая стена — гараж, задняя — кирпич, фасад и правый торец — стекло в пол.`],
+ ['Внутри','Туалет с душем, кухня с мойкой и электроплитой, бар, телевизор на стене гаража, угловой диван, стол на 10 мест, выход на веранду.'],
+ ['Перед беседкой',`Дорожка-веранда из террасной доски ${P.walkway.depth.toString().replace('.',',')} м шириной до гаража. Ниже — клумба, зона отдыха ${P.open_zone.w.toString().replace('.',',')} × ${P.yard.depth} м под прозрачным навесом, клумба.`],
+ ['Фундамент (совет)','Монолитная плита 20 см с утолщением по краям под стены. Она же черновой пол под керамогранит. Под навес и террасную доску — винтовые сваи.']];
+f.innerHTML=items.map(([b,p])=>`<div class="card"><b>${b}</b><p>${p}</p></div>`).join('');})();
+</script>
+
+</html>
