@@ -45,6 +45,9 @@ tr.total td{font-weight:700;border-bottom:none}
 .pill{display:inline-block;font:600 12px var(--font-body);padding:2px 8px;border-radius:99px;border:1px solid currentColor}
 .pill.warn{color:var(--warn)} .pill.ok{color:var(--ok)}
 .note{color:var(--muted);font-size:13px}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.gal figure{margin:0}.gal img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--line)}
+.gal figcaption{color:var(--muted);font-size:13px;margin-top:4px}
 ul.plain{margin:0;padding-left:18px}
 </style>
 
@@ -74,6 +77,7 @@ ul.plain{margin:0;padding-left:18px}
     <p id="var-note" style="margin-top:8px"></p>
   </section>
 
+<section><h2>Как это может выглядеть</h2><p class="note">Картинки посчитаны в Blender по тем же размерам. Мебель, цвета и свет — пример стиля, не конкретные товары. Вариант выступа — первый.</p><div class="gal"><figure><a href="img/facade.jpg"><img src="img/facade.jpg" alt="Фасад со двора" loading="lazy" width="1600" height="900"></a><figcaption>Фасад со двора</figcaption></figure><figure><a href="img/lounge.jpg"><img src="img/lounge.jpg" alt="Зона отдыха под навесом, ротанговый набор" loading="lazy" width="1600" height="900"></a><figcaption>Зона отдыха под навесом, ротанговый набор</figcaption></figure><figure><a href="img/kitchen.jpg"><img src="img/kitchen.jpg" alt="Внутри: стол на 10 мест, кухня, бар" loading="lazy" width="1600" height="900"></a><figcaption>Внутри: стол на 10 мест, кухня, бар</figcaption></figure><figure><a href="img/living.jpg"><img src="img/living.jpg" alt="Внутри: угловой диван и телевизор" loading="lazy" width="1600" height="900"></a><figcaption>Внутри: угловой диван и телевизор</figcaption></figure><figure><a href="img/aerial.jpg"><img src="img/aerial.jpg" alt="Весь участок сверху" loading="lazy" width="1600" height="900"></a><figcaption>Весь участок сверху</figcaption></figure><figure><a href="img/lounge_evening.jpg"><img src="img/lounge_evening.jpg" alt="Вечер: зона отдыха" loading="lazy" width="1600" height="900"></a><figcaption>Вечер: зона отдыха</figcaption></figure><figure><a href="img/facade_evening.jpg"><img src="img/facade_evening.jpg" alt="Вечер: фасад" loading="lazy" width="1600" height="900"></a><figcaption>Вечер: фасад</figcaption></figure></div></section>
   <section class="grid" id="facts"></section>
 
   
