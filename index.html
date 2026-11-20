@@ -62,6 +62,8 @@ ul.plain{margin:0;padding-left:18px}
     <button id="v-in" aria-pressed="false">Внутри</button>
     <button id="v-open" aria-pressed="false">Зона отдыха</button>
     <button id="v-top" aria-pressed="false">План сверху</button>
+    <button id="v-site" aria-pressed="false">Весь участок</button>
+    <button id="t-now" aria-pressed="false">Как сейчас</button>
     <button id="t-roof" aria-pressed="false">Снять крышу</button>
     <button id="t-night" aria-pressed="false">Вечер</button>
   </div>
@@ -213,7 +215,7 @@ ul.plain{margin:0;padding-left:18px}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
-const P = {"_note": "Единый источник размеров (метры). Ось X — вдоль беседки (0 = стена гаража), Z — вглубь от зелёного забора (0 = задняя кирпичная стена) к кирпичному забору. Меняешь тут — пересобирай модель и смету.", "pavilion": {"length": 13.4, "depth": 6.6, "wall_height": 3.0, "back_wall_thickness": 0.25, "roof_type": "hip", "roof_slope_deg": 22, "roof_overhang": 0.5, "column_step": 3.35, "slab_thickness": 0.2, "slab_edge_extra_depth": 0.3, "slab_edge_width": 0.4, "slab_outset": 0.15, "sand_cushion": 0.2, "gravel_layer": 0.15, "glazing_height": 2.5, "_glazing_note": "Створки раздвижных систем обычно до ~2.5 м (Alutech ALT W62 — 2.5 м по производителю), поэтому стекло 2.5 м + сверху полоса обшивки 0.5 м, как на фото-примере 1"}, "garage": {"x0": -3.0, "length": 3.0, "depth": 6.6, "height": 2.8}, "bathroom": {"x0": 0.0, "z0": 0.0, "w": 2.4, "d": 1.8, "wall_height": 3.0}, "kitchen": {"x0": 4.6, "w": 4.2, "d": 0.6}, "bar": {"x0": 9.6, "w": 2.5, "d": 0.6}, "tv": {"z0": 2.6, "w": 1.6}, "corner_sofa": {"x0": 3.4, "z0": 2.1, "a": 2.8, "b": 2.6, "depth": 0.9}, "dining": {"cx": 9.8, "cz": 3.6, "len": 3.2, "wid": 1.2, "chairs": 10}, "exit_door": {"x0": 7.6, "w": 2.4}, "walkway": {"z0": 6.6, "depth": 1.2, "x0": -3.0, "x1": 13.4}, "yard": {"z0": 7.8, "depth": 7.0}, "bed_left": {"x0": 0.0, "w": 7.4}, "open_zone": {"x0": 7.4, "w": 5.5, "canopy_height": 2.7, "canopy_overhang": 0.25, "post_count": 6, "rafter_step": 1.05, "purlin_step": 0.7}, "bed_right": {"x0": 12.9, "w": 0.5}, "deck": {"lag_step": 0.4, "pile_step": 1.5, "waste": 0.07}, "cable_from_house_m": 30};
+const P = {"_note": "Единый источник размеров (метры). Ось X — вдоль беседки (0 = стена гаража), Z — вглубь от зелёного забора (0 = задняя кирпичная стена) к кирпичному забору. Меняешь тут — пересобирай модель и смету.", "pavilion": {"length": 13.4, "depth": 6.6, "wall_height": 3.0, "back_wall_thickness": 0.25, "roof_type": "hip", "roof_slope_deg": 22, "roof_overhang": 0.5, "column_step": 3.35, "slab_thickness": 0.2, "slab_edge_extra_depth": 0.3, "slab_edge_width": 0.4, "slab_outset": 0.15, "sand_cushion": 0.2, "gravel_layer": 0.15, "glazing_height": 2.5, "_glazing_note": "Створки раздвижных систем обычно до ~2.5 м (Alutech ALT W62 — 2.5 м по производителю), поэтому стекло 2.5 м + сверху полоса обшивки 0.5 м, как на фото-примере 1"}, "garage": {"x0": -3.0, "length": 3.0, "depth": 6.6, "height": 2.8}, "bathroom": {"x0": 0.0, "z0": 0.0, "w": 2.4, "d": 1.8, "wall_height": 3.0}, "kitchen": {"x0": 4.6, "w": 4.2, "d": 0.6}, "bar": {"x0": 9.6, "w": 2.5, "d": 0.6}, "tv": {"z0": 2.6, "w": 1.6}, "corner_sofa": {"x0": 3.4, "z0": 2.1, "a": 2.8, "b": 2.6, "depth": 0.9}, "dining": {"cx": 9.8, "cz": 3.6, "len": 3.2, "wid": 1.2, "chairs": 10}, "exit_door": {"x0": 7.6, "w": 2.4}, "walkway": {"z0": 6.6, "depth": 1.2, "x0": -3.0, "x1": 13.4}, "yard": {"z0": 7.8, "depth": 7.0}, "bed_left": {"x0": 0.0, "w": 7.4}, "open_zone": {"x0": 7.4, "w": 5.5, "canopy_height": 2.7, "canopy_overhang": 0.25, "post_count": 6, "rafter_step": 1.05, "purlin_step": 0.7}, "bed_right": {"x0": 12.9, "w": 0.5}, "deck": {"lag_step": 0.4, "pile_step": 1.5, "waste": 0.07}, "cable_from_house_m": 30, "site": {"_note": "Окружение по фото, размеры ПРИМЕРНЫЕ (уточнить у заказчика): улица с воротами за гаражом, дом у противоположного конца двора", "x_street": -10.0, "x_end": 30.0, "house": {"x0": 18.0, "x1": 28.0, "z0": 1.0, "z1": 11.0, "h": 6.0}, "gate": {"z0": 8.5, "z1": 13.5}, "driveway": {"x0": -10.0, "x1": -0.5, "z0": 7.8, "z1": 14.8}, "pergola": {"x0": 0.6, "x1": 7.0, "z0": 11.6, "z1": 14.4, "h": 2.4}, "booth": {"x0": 7.2, "x1": 8.3, "z0": 13.4, "z1": 14.5, "h": 2.2}}};
 (function(){
 const stage=document.getElementById('stage'), hint=document.getElementById('hint');
 if(!window.THREE){hint.textContent='3D не загрузилось — обновите страницу';return;}
@@ -229,7 +231,7 @@ controls.enableDamping=true; controls.maxPolarAngle=Math.PI*0.495;
 
 const hemi=new THREE.HemisphereLight(0xeef3f7,0x55604a,0.75); scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xffffff,0.85); sun.position.set(18,26,22); sun.castShadow=true;
-sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-20,right:25,top:25,bottom:-20}); scene.add(sun);
+sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-35,right:40,top:40,bottom:-35}); scene.add(sun);
 
 const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.85,metalness:0},o));
 const mat={
@@ -242,17 +244,57 @@ const mat={
   led:new THREE.MeshStandardMaterial({color:0xffb46b,emissive:0xff9a40,emissiveIntensity:0})
 };
 function box(x0,y0,z0,x1,y1,z1,m,parent){const g=new THREE.BoxGeometry(x1-x0,y1-y0,z1-z0);const b=new THREE.Mesh(g,m);
-  b.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);b.castShadow=b.receiveShadow=true;(parent||scene).add(b);return b;}
+  b.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);b.castShadow=b.receiveShadow=true;(parent||CUR).add(b);return b;}
+const exG=new THREE.Group(), newG=new THREE.Group(); scene.add(exG); scene.add(newG); let CUR=exG;
+Object.assign(mat,{gravel:M(0xcfc4a8),red:M(0xa5543c),house:M(0xe6d29a),roofOld:M(0x6b3a2c,{roughness:.6,metalness:.25}),
+  leaf:M(0x56703c),trunk:M(0x6b5640),gate:M(0x4a3128,{metalness:.4,roughness:.5}),rust:M(0x4b2e22,{metalness:.5,roughness:.6}),pine:M(0xd8aa5c),car:M(0xdedad2,{metalness:.3,roughness:.4})});
 
-// ground
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(60,60),mat.grass);ground.rotation.x=-Math.PI/2;ground.position.set(6,0,7);ground.receiveShadow=true;scene.add(ground);
-// fences
-box(-6,0,-0.65,17,2.0,-0.6,mat.green);
-const yz=P.yard.z0+P.yard.depth;
-box(-6,0,yz,17,2.2,yz+0.25,mat.brick); box(-6,2.2,yz-0.03,17,2.28,yz+0.28,mat.cap);
-for(let x=-6;x<=17;x+=3.2) box(x-0.2,0,yz-0.05,x+0.2,2.45,yz+0.3,mat.brick);
-// garage
+// ===== СЕЙЧАС: участок по фото (размеры примерные) =====
+const ST=P.site, XS=ST.x_street, XE=ST.x_end, yz=P.yard.z0+P.yard.depth;
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,300),mat.grass);ground.rotation.x=-Math.PI/2;ground.position.set(10,-0.01,7);ground.receiveShadow=true;scene.add(ground);
+// зелёный забор из профлиста (сосед) и кирпичный забор со столбами
+box(XS,0,-0.65,XE,2.0,-0.6,mat.green);
+box(XS,0,yz,XE,2.2,yz+0.25,mat.brick); box(XS,2.2,yz-0.03,XE,2.28,yz+0.28,mat.cap);
+for(let x=XS;x<=XE;x+=3.2){box(x-0.2,0,yz-0.05,x+0.2,2.45,yz+0.3,mat.brick);box(x-0.24,2.45,yz-0.09,x+0.24,2.55,yz+0.34,mat.cap);}
+// улица: кирпичный забор с воротами
+const GT=ST.gate;
+box(XS-0.25,0,-0.6,XS,2.2,GT.z0,mat.brick); box(XS-0.25,0,GT.z1,XS,2.2,yz,mat.brick);
+box(XS-0.2,0,GT.z0,XS-0.1,2.0,GT.z1,mat.gate);
+// гравийный подъезд и машина
+const DW=ST.driveway; box(DW.x0,0,DW.z0,DW.x1,0.03,DW.z1,mat.gravel);
+box(-8.2,0.35,9.6,-4.0,1.25,11.4,mat.car); box(-7.4,1.25,9.7,-4.8,1.85,11.3,mat.car);
+// гараж из жёлтого кирпича
 const G=P.garage; box(G.x0,0,0,G.x0+G.length,G.height,G.depth,mat.brick); box(G.x0-0.1,G.height,-0.1,G.x0+G.length+0.05,G.height+0.15,G.depth+0.1,mat.graphite);
+// дом заказчика
+const HS=ST.house; box(HS.x0,0,HS.z0,HS.x1,HS.h,HS.z1,mat.house);
+(function(){const o=0.5,x0=HS.x0-o,x1=HS.x1+o,z0=HS.z0-o,z1=HS.z1+o,y=HS.h,rh=2.2,cx=(x0+x1)/2,cz=(z0+z1)/2;
+  const p=[],t=(a,b,c)=>p.push(...a,...b,...c),A=[x0,y,z1],B=[x1,y,z1],C=[x1,y,z0],D2=[x0,y,z0],T=[cx,y+rh,cz];
+  t(A,B,T);t(B,C,T);t(C,D2,T);t(D2,A,T);const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.computeVertexNormals();
+  const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0x6b3a2c,roughness:.6,metalness:.25,side:THREE.DoubleSide}));m.castShadow=true;exG.add(m);})();
+for(let i=0;i<3;i++) box(HS.x0-0.02,2.2,HS.z0+1.5+i*3,HS.x0,3.6,HS.z0+2.7+i*3,mat.black);
+// старая бетонная дорожка от дома к гаражу
+box(G.x0+G.length,0,P.walkway.z0,HS.x0,0.08,P.walkway.z0+P.walkway.depth,mat.concrete);
+// металлический каркас над клумбой (встраиваем — остаётся под вьющиеся)
+const PG=ST.pergola;
+for(const x of [PG.x0,(PG.x0+PG.x1)/2,PG.x1]) for(const z of [PG.z0,PG.z1]) box(x,0.4,z,x+0.05,PG.h,z+0.05,mat.rust);
+for(const y of [1.2,1.8,PG.h]) for(const z of [PG.z0,PG.z1]) box(PG.x0,y,z,PG.x1+0.05,y+0.04,z+0.04,mat.rust);
+for(const x of [PG.x0,PG.x1]) box(x,PG.h,PG.z0,x+0.04,PG.h+0.04,PG.z1+0.05,mat.rust);
+// деревянная будка у забора
+const BT=ST.booth; const oldOnly=[box(BT.x0,0,BT.z0,BT.x1,BT.h,BT.z1,mat.pine), box(BT.x0-0.1,BT.h,BT.z0-0.1,BT.x1+0.1,BT.h+0.08,BT.z1+0.1,mat.graphite)];
+// высокие бетонные клумбы — уже есть
+const Y=P.yard, y1=Y.z0+Y.depth;
+function bed(x0,w){box(x0,0,Y.z0,x0+w,0.4,y1,mat.concrete);box(x0+0.15,0.38,Y.z0+0.15,x0+w-0.15,0.42,y1-0.15,mat.soil);}
+bed(P.bed_left.x0,P.bed_left.w); bed(P.bed_right.x0,P.bed_right.w);
+// деревья
+function tree(x,z,h,r){box(x-0.08,0,z-0.08,x+0.08,h*0.55,z+0.08,mat.trunk);const c=new THREE.Mesh(new THREE.SphereGeometry(r,10,8),mat.leaf);c.position.set(x,h*0.7,z);c.castShadow=true;CUR.add(c);}
+tree(-0.3,9.0,5,1.3); tree(15.6,13.0,3,1.4); tree(14.5,9.2,3.5,0.9); tree(16.5,3.5,3,0.9); tree(3.0,9.4,2.5,0.7); tree(20,14.0,6,1.8);
+// дома соседей
+box(10,0,-12,19,6,-3,mat.house); box(9.6,6,-12.4,19.4,6.2,-2.6,mat.roofOld);
+box(16,0,22,24,6,29,mat.red); box(15.6,6,21.6,24.4,6.2,29.4,mat.roofOld);
+box(-22,0,2,-14,5,10,mat.red); box(-4,0,-14,4,4.5,-6,mat.red);
+
+// ===== НОВОЕ: беседка, терраса, навес =====
+CUR=newG;
 // slab + floor
 box(-0.0,0,0,L,S,D,mat.concrete); box(0.25,S,0.25,L,S+0.02,D,mat.tile);
 // back brick wall
@@ -273,7 +315,7 @@ function glassRun(axis,a0,a1,fixed){const n=Math.max(1,Math.round((a1-a0)/1.1));
 for(let i=0;i<cols.length-1;i++) glassRun('x',cols[i]+0.1,cols[i+1],D);
 glassRun('z',pv.back_wall_thickness,D/2,L); glassRun('z',D/2+0.1,D-0.1,L);
 // ceiling + roof
-const roofGroup=new THREE.Group(); scene.add(roofGroup);
+const roofGroup=new THREE.Group(); newG.add(roofGroup);
 box(0,S+H,0,L,S+H+0.05,D,mat.wood,roofGroup);
 const o=pv.roof_overhang, ex0=-o, ex1=L+o, ez0=-o, ez1=D+o, ey=S+H+0.05;
 const run=(ez1-ez0)/2, rh=run*Math.tan(pv.roof_slope_deg*Math.PI/180), zr=(ez0+ez1)/2;
@@ -310,15 +352,12 @@ box(C.x0+0.8,S,C.z0+1.3,C.x0+1.6,S+0.4,C.z0+2.1,mat.wood);
 const Dn=P.dining, tx0=Dn.cx-Dn.len/2, tz0=Dn.cz-Dn.wid/2;
 box(tx0,S+0.72,tz0,tx0+Dn.len,S+0.76,tz0+Dn.wid,mat.wood);
 [[tx0+0.2,tz0+0.2],[tx0+Dn.len-0.2,tz0+0.2],[tx0+0.2,tz0+Dn.wid-0.2],[tx0+Dn.len-0.2,tz0+Dn.wid-0.2]].forEach(([x,z])=>box(x-0.04,S,z-0.04,x+0.04,S+0.72,z+0.04,mat.graphite));
-const chair=(x,z,r)=>{const g=new THREE.Group();box(-0.23,0,-0.23,0.23,0.47,0.23,mat.sofa,g);box(-0.23,0.47,0.18,0.23,0.95,0.25,mat.sofa,g);g.position.set(x,S,z);g.rotation.y=r;scene.add(g);};
+const chair=(x,z,r)=>{const g=new THREE.Group();box(-0.23,0,-0.23,0.23,0.47,0.23,mat.sofa,g);box(-0.23,0.47,0.18,0.23,0.95,0.25,mat.sofa,g);g.position.set(x,S,z);g.rotation.y=r;newG.add(g);};
 for(let i=0;i<4;i++){const x=tx0+0.4+i*(Dn.len-0.8)/3; chair(x,tz0-0.45,Math.PI); chair(x,tz0+Dn.wid+0.45,0);}
 chair(tx0-0.45,Dn.cz,-Math.PI/2); chair(tx0+Dn.len+0.45,Dn.cz,Math.PI/2);
 // walkway deck
 const W=P.walkway; box(W.x0,0,W.z0,W.x1,0.15,W.z0+W.depth,mat.deck);
 // yard: beds and open zone
-const Y=P.yard, y1=Y.z0+Y.depth;
-function bed(x0,w){box(x0,0,Y.z0,x0+w,0.4,y1,mat.concrete);box(x0+0.15,0.38,Y.z0+0.15,x0+w-0.15,0.42,y1-0.15,mat.soil);}
-bed(P.bed_left.x0,P.bed_left.w); bed(P.bed_right.x0,P.bed_right.w);
 const OZ=P.open_zone, ox0=OZ.x0, ox1=OZ.x0+OZ.w;
 box(ox0,0,Y.z0,ox1,0.15,y1,mat.deck);
 // canopy
@@ -329,7 +368,7 @@ box(ox0-co,ch,Y.z0-co,ox0+0.1,ch+0.1,y1+co,mat.graphite); box(ox1-0.2,ch,Y.z0-co
 for(let z=Y.z0-co;z<=y1+co;z+=OZ.rafter_step) box(ox0-co,ch+0.1,z,ox1+co,ch+0.16,z+0.04,mat.graphite);
 box(ox0-co,ch+0.17,Y.z0-co,ox1+co,ch+0.18,y1+co,mat.poly);
 // rattan hexagon table + two L sofas
-const hex=new THREE.Mesh(new THREE.CylinderGeometry(0.75,0.75,0.45,6),mat.rattan); hex.position.set((ox0+ox1)/2,0.15+0.225,(Y.z0+y1)/2-0.6); hex.castShadow=true; scene.add(hex);
+const hex=new THREE.Mesh(new THREE.CylinderGeometry(0.75,0.75,0.45,6),mat.rattan); hex.position.set((ox0+ox1)/2,0.15+0.225,(Y.z0+y1)/2-0.6); hex.castShadow=true; newG.add(hex);
 const hcx=(ox0+ox1)/2, hcz=(Y.z0+y1)/2-0.6;
 [-1,1].forEach(s=>{const x=hcx+s*1.7; box(x-0.4,0.15,hcz-1.2,x+0.4,0.6,hcz+1.0,mat.rattan); box(x-0.4,0.6,hcz-1.2,x+0.4,0.68,hcz+1.0,mat.white);
   box(Math.min(x,x-s*0.9)-0.0,0.15,hcz+1.0,Math.max(x,x-s*0.9)+0.0,0.6,hcz+1.8,mat.rattan);});
@@ -339,22 +378,30 @@ function label(text,x,y,z){const c=document.createElement('canvas');c.width=512;
   const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));s.scale.set(4,1,1);s.position.set(x,y,z);scene.add(s);return s;}
 const labels=[label('13,4 м',L/2,S+H+2.3,D+0.6),label('6,6 м',L+1.6,S+H+0.6,D/2),
   label('зона отдыха 5,5 м',(ox0+ox1)/2,ch+0.9,y1-0.5),label('гараж',G.x0+G.length/2,G.height+0.8,D/2)];
+const exLabels=[label('дом',(HS.x0+HS.x1)/2,HS.h+3.2,(HS.z0+HS.z1)/2),label('ворота',XS-0.2,3.0,(GT.z0+GT.z1)/2),label('гараж',G.x0+G.length/2,G.height+0.8,D/2)];
+exLabels.forEach(s=>s.visible=false);
 
 // views
 const views={
   'v-all':{p:[22,15,26],t:[5.5,1,7]},
-  'v-front':{p:[6.5,2.2,19],t:[6.5,1.8,4]},
   'v-in':{p:[12.6,1.65,6.0],t:[2.5,1.2,2.2],nolabels:true},
   'v-front':{p:[6.5,2.2,19],t:[6.5,1.8,4],nolabels:true},
   'v-open':{p:[13.2,3.1,17.2],t:[8.2,1.2,8.5],nolabels:true},
-  'v-top':{p:[6.0,34,7.5],t:[6.0,0,7.4],noroof:true}
+  'v-top':{p:[6.0,34,7.5],t:[6.0,0,7.4],noroof:true},
+  'v-site':{p:[8,26,34],t:[9,0,6]}
 };
 let roofOn=true;
 function setRoof(on){roofOn=on;roofGroup.visible=on;document.getElementById('t-roof').setAttribute('aria-pressed',String(!on));}
-function go(id){const v=views[id];const k=(camera.aspect<1&&(id==='v-all'||id==='v-top'))?1.7:1;
+function go(id){const v=views[id];const k=(camera.aspect<1&&(id==='v-all'||id==='v-top'||id==='v-site'))?1.7:1; curNo=!!v.nolabels;
   camera.position.set(v.t[0]+(v.p[0]-v.t[0])*k,v.t[1]+(v.p[1]-v.t[1])*k,v.t[2]+(v.p[2]-v.t[2])*k);controls.target.set(...v.t);controls.update();
   Object.keys(views).forEach(k=>document.getElementById(k).setAttribute('aria-pressed',String(k===id)));
-  setRoof(!v.noroof); labels.forEach(s=>s.visible=!v.nolabels);}
+  setRoof(!v.noroof); showLabels(!v.nolabels);}
+let nowMode=false, curNo=false;
+function showLabels(on){labels.forEach(s=>s.visible=on&&!nowMode);exLabels.forEach(s=>s.visible=on&&nowMode);}
+function setNow(on){nowMode=on;newG.visible=!on;oldOnly.forEach(m=>m.visible=on);document.getElementById('t-now').setAttribute('aria-pressed',String(on));
+  document.getElementById('t-now').textContent=on?'С беседкой':'Как сейчас';showLabels(!curNo);}
+setNow(false);
+document.getElementById('t-now').addEventListener('click',()=>setNow(!nowMode));
 Object.keys(views).forEach(k=>document.getElementById(k).addEventListener('click',()=>go(k)));
 document.getElementById('t-roof').addEventListener('click',()=>setRoof(!roofOn));
 let night=false; document.getElementById('t-night').addEventListener('click',e=>{night=!night;e.currentTarget.setAttribute('aria-pressed',String(night));
@@ -375,6 +422,7 @@ const items=[
  ['Закрытая беседка',`${pv.length} × ${pv.depth} м, ${(pv.length*pv.depth).toFixed(1).replace('.',',')} м², высота стен ${pv.wall_height} м. Левая стена — гараж, задняя — кирпич, фасад и правый торец — стекло в пол.`],
  ['Внутри','Туалет с душем, кухня с мойкой и электроплитой, бар, телевизор на стене гаража, угловой диван, стол на 10 мест, выход на веранду.'],
  ['Перед беседкой',`Дорожка-веранда из террасной доски ${P.walkway.depth.toString().replace('.',',')} м шириной до гаража. Ниже — клумба, зона отдыха ${P.open_zone.w.toString().replace('.',',')} × ${P.yard.depth} м под прозрачным навесом, клумба.`],
+ ['Вокруг (примерно)','Кнопка «Как сейчас» убирает новое и показывает участок сегодня: дом, ворота с улицы, гараж, клумбы, старый каркас и деревья. Дом и соседи нарисованы по фото, их размеры примерные.'],
  ['Фундамент (совет)','Монолитная плита 20 см с утолщением по краям под стены. Она же черновой пол под керамогранит. Под навес и террасную доску — винтовые сваи.']];
 f.innerHTML=items.map(([b,p])=>`<div class="card"><b>${b}</b><p>${p}</p></div>`).join('');})();
 </script>
